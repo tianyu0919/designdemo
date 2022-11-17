@@ -23,10 +23,9 @@
 </body>
 <script>
   window.onload = () => {
-    let Button = React.createElement(Demo.Button, { onClick: () => { console.log(this) } }, '你好吗');
+    let Button = React.createElement(Demo.Button.Button, { onClick: () => { console.log(this) } }, '你好吗');
     ReactDOM.render(Button, document.getElementById('root'));
   }
-
 </script>
 
 </html>

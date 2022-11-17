@@ -8,7 +8,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index1.js',
   mode: 'development',
   output: {
     clean: true,
@@ -24,6 +24,10 @@ module.exports = {
   devtool: false,
   devServer: {
     hot: true,
+    // host: '0.0.0.0',
+    static: {
+      directory: path.resolve(__dirname, './dist')
+    },
     port: 9527,
     compress: true,
   },
@@ -31,8 +35,8 @@ module.exports = {
     extensions: ['.js', '.ts', '.jsx', '.tsx']
   },
   externals: {
-    // "react": 'react',
-    // "react-dom": 'react-dom'
+    "react": 'React',
+    "react-dom": 'ReactDOM'
   },
   module: {
     rules: [
@@ -52,7 +56,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, './src/index.html'),
+      template: path.resolve(__dirname, './index.html'),
+      // template: path.resolve(__dirname, './src/index.html'),
       // inject: 'body'
     }),
     new MiniCssExtractPlugin()
