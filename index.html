@@ -3,29 +3,90 @@
  * @Date: 2022-11-17 22:06:16
  * @Description: 
 -->
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="zh-cn">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,user-scalable=no"
+    />
+    <meta name="description" content="网站的描述内容。" />
+    <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+    <meta name="Author" content="归宿" />
+    <meta name="Keywords" content="关键字" />
+    <title>网页标题</title>
+    <!-- <script src="https://unpkg.com/react@17/umd/react.development.js"></script> -->
+    <!-- <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script> -->
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no" />
-  <meta name="description" content="网站的描述内容。" />
-  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-  <meta name="Author" content="归宿" />
-  <meta name="Keywords" content="关键字" />
-  <title>网页标题</title>
-  <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-</head>
+  <body>
+    <div id="root"></div>
+    <label for="checkbox">
+      <input type="checkbox" id="checkbox" name="checkbox" value="xxx" />xxx
+    </label>
+    <pre id="code"></pre>
+  </body>
+  <script>
+    // window.onload = () => {
+    //   let Button = React.createElement(
+    //     Demo.Button.Button,
+    //     {
+    //       onClick: () => {
+    //         console.log(this);
+    //       },
+    //     },
+    //     "你好吗"
+    //   );
+    //   ReactDOM.render(Button, document.getElementById("root"));
+    // };
 
-<body>
-  <div id="root"></div>
-</body>
-<script>
-  window.onload = () => {
-    let Button = React.createElement(Demo.Button.Button, { onClick: () => { console.log(this) } }, '你好吗');
-    ReactDOM.render(Button, document.getElementById('root'));
-  }
-</script>
+    let checkbox = document.querySelector("#checkbox");
 
+    // checkbox.checked = true;
+
+    // console.log(checkbox, document.getElementById("checkbox"));
+    let code = document.querySelector("#code");
+
+    // 重写数组的方法
+    function obServe(target = [], options = {}) {
+      const arrExtend = Object.create(Array.prototype);
+      Object.keys(options).forEach((method) => {
+        const oldMethod = Array.prototype[method];
+        const newMethod = function (...args) {
+          oldMethod.apply(this, args);
+          options[method](target);
+        };
+        arrExtend[method] = newMethod;
+      });
+
+      keyDownItems.__proto__ = arrExtend;
+      return target;
+    }
+
+    var keyDownItems = [];
+
+    obServe(keyDownItems, {
+      push: (data) => {
+        code.innerHTML = JSON.stringify(data, null, 2);
+      },
+      splice: (data) => {
+        code.innerHTML = JSON.stringify(data, null, 2);
+      },
+    });
+
+    document.addEventListener("keydown", (ev) => {
+      const { key, keyCode } = ev;
+      if (!keyDownItems.find((item) => keyCode === item.keyCode)) {
+        keyDownItems.push({ key, keyCode });
+      }
+    });
+    document.addEventListener("keyup", (ev) => {
+      const { key, keyCode } = ev;
+      const idx = keyDownItems.findIndex((item) => keyCode === item.keyCode);
+      if (idx !== -1) {
+        keyDownItems.splice(idx, 1);
+      }
+    });
+  </script>
 </html>
